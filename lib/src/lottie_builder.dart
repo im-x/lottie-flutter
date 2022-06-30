@@ -433,23 +433,31 @@ class _LottieBuilderState extends State<LottieBuilder> {
     }
   }
 
+  Map<String, LottieComposition> cacheComs;
+
   void _load() {
     var provider = widget.lottie;
-    _loadingFuture = widget.lottie.load().then((composition) {
-      if (mounted && widget.lottie == provider) {
-        var onWarning = widget.onWarning;
-        composition.onWarning = onWarning;
-        if (onWarning != null) {
-          for (var warning in composition.warnings) {
-            onWarning(warning);
+    if (cacheComs.containsKey(widget.lottie.url)) {
+      return cacheComs[widget.lottie.url];
+    } else {
+      _loadingFuture = widget.lottie.load().then((composition) {
+        if (mounted && widget.lottie == provider) {
+          var onWarning = widget.onWarning;
+          composition.onWarning = onWarning;
+
+          if (onWarning != null) {
+            for (var warning in composition.warnings) {
+              onWarning(warning);
+            }
           }
+
+          widget.onLoaded?.call(composition);
         }
 
-        widget.onLoaded?.call(composition);
-      }
-
-      return composition;
-    });
+        cacheComs[widget.lottie.url] = composition;
+        return composition;
+      });
+    }
   }
 
   @override
