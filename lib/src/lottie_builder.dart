@@ -433,48 +433,50 @@ class _LottieBuilderState extends State<LottieBuilder> {
     }
   }
 
-//  Map<String, LottieComposition> cacheComs = <String, LottieComposition>{};
+  Map<String, LottieComposition> cacheComs = <String, LottieComposition>{};
 
   void _load() {
-    // final cacheKey = super.widget.key;
+    String cacheKey = widget.lottie?.url ? widget.lottie?.url : '';
     var provider = widget.lottie;
 
-    // _loadingFuture = cacheComs.containsKey(cacheKey);
-    //     ? cacheComs[cacheKey]
-    //     : widget.lottie.load().then((composition) {
-    //         if (mounted && widget.lottie == provider) {
-    //           var onWarning = widget.onWarning;
-    //           composition.onWarning = onWarning;
+    _loadingFuture = cacheComs.containsKey(cacheKey)
+        ? cacheComs[cacheKey]
+        : widget.lottie.load().then((composition) {
+            if (mounted && widget.lottie == provider) {
+              var onWarning = widget.onWarning;
+              composition.onWarning = onWarning;
 
-    //           if (onWarning != null) {
-    //             for (var warning in composition.warnings) {
-    //               onWarning(warning);
-    //             }
-    //           }
+              if (onWarning != null) {
+                for (var warning in composition.warnings) {
+                  onWarning(warning);
+                }
+              }
 
-    //           widget.onLoaded?.call(composition);
-    //         }
+              widget.onLoaded?.call(composition);
+            }
 
-    //         cacheComs[cacheKey] = composition;
-    //         return composition;
-    //       });
+            if (cacheKey != '') {
+              cacheComs[cacheKey] = composition;
+            }
+            return composition;
+          });
 
-    _loadingFuture = widget.lottie.load().then((composition) {
-      if (mounted && widget.lottie == provider) {
-        var onWarning = widget.onWarning;
-        composition.onWarning = onWarning;
+    // _loadingFuture = widget.lottie.load().then((composition) {
+    //   if (mounted && widget.lottie == provider) {
+    //     var onWarning = widget.onWarning;
+    //     composition.onWarning = onWarning;
 
-        if (onWarning != null) {
-          for (var warning in composition.warnings) {
-            onWarning(warning);
-          }
-        }
+    //     if (onWarning != null) {
+    //       for (var warning in composition.warnings) {
+    //         onWarning(warning);
+    //       }
+    //     }
 
-        widget.onLoaded?.call(composition);
-      }
+    //     widget.onLoaded?.call(composition);
+    //   }
 
-      return composition;
-    });
+    //   return composition;
+    // });
   }
 
   @override
