@@ -433,7 +433,7 @@ class _LottieBuilderState extends State<LottieBuilder> {
     }
   }
 
-  Map<String, LottieComposition> cacheComs;
+  Map<String, LottieComposition> cacheComs = <String, LottieComposition>{};
 
   void _load() {
     var provider = widget.lottie;
