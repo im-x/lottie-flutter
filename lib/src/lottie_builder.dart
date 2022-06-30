@@ -437,7 +437,7 @@ class _LottieBuilderState extends State<LottieBuilder> {
 
   void _load() {
     // String cacheKey = widget.lottie?.url ?? '';
-    // var provider = widget.lottie;
+    var provider = widget.lottie;
 
     // _loadingFuture = cacheComs.containsKey(cacheKey);
     //     ? cacheComs[cacheKey]
